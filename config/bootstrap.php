@@ -212,6 +212,7 @@ Type::build('datetime')
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
+Plugin::load('TwitterBootstrap');
 
 /*
  * Only try to load DebugKit in development mode
@@ -220,3 +221,5 @@ Type::build('datetime')
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
+
+Plugin::load('DebugKit');

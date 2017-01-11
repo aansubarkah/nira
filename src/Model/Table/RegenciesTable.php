@@ -63,6 +63,10 @@ class RegenciesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->boolean('kind')
+            ->allowEmpty('kind', 'create');
+
+        $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 

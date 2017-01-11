@@ -18,6 +18,7 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('province_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('kind') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -28,6 +29,7 @@
                 <td><?= $this->Number->format($regency->id) ?></td>
                 <td><?= $regency->has('province') ? $this->Html->link($regency->province->name, ['controller' => 'Provinces', 'action' => 'view', $regency->province->id]) : '' ?></td>
                 <td><?= h($regency->name) ?></td>
+                <td><?= h($regency->kind) ?></td>
                 <td><?= h($regency->active) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $regency->id]) ?>

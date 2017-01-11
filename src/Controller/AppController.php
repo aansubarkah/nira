@@ -43,6 +43,17 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginRedirect' => [
+                'controller' => 'Users',
+                'action' => 'profile'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Pages',
+                'action' => 'display',
+                'home'
+            ]
+        ]);
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -65,5 +76,37 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+        $this->set('user', $this->Auth->user());
+
+        $this->viewBuilder()->theme('TwitterBootstrap');
+    }
+
+    /**
+    * Before Filter callback.
+    *
+    * @param \Cake\Event\Event $event The beforeFilter event.
+    * @return \Cake\Network\Response|null|void
+    *
+    */
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['index', 'view', 'display']);
+    }
+
+    /**
+    * Authorized method
+    *
+    * @param string
+    * @return
+    */
+    public function isAuthorized($user)
+    {
+        // Admin can access every action
+        if (isset($user['role_id']) && $user['role_id'] === 1) {
+            return true;
+        }
+
+        // Default deny
+        return false;
     }
 }

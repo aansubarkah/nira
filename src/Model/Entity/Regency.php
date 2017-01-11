@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $province_id
+ * @property bool $kind
  * @property string $name
  * @property bool $active
  *

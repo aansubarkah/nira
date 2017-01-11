@@ -69,12 +69,12 @@ class EducationsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->string('name')
+            ->allowEmpty('name');
 
         $validator
-            ->requirePresence('periods', 'create')
-            ->notEmpty('periods');
+            ->string('periods')
+            ->allowEmpty('periods');
 
         $validator
             ->boolean('active')

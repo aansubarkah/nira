@@ -17,6 +17,7 @@
         <?php
             echo $this->Form->input('province_id', ['options' => $provinces]);
             echo $this->Form->input('name');
+            echo $this->Form->input('kind');
             echo $this->Form->input('active');
         ?>
     </fieldset>
