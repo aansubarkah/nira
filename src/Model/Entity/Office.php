@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property int $category_id
  * @property int $regency_id
  * @property string $name
+ * @property string $number
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property bool $active

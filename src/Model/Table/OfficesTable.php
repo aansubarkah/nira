@@ -104,6 +104,10 @@ class OfficesTable extends Table
             ->notEmpty('name');
 
         $validator
+            ->string('name')
+            ->allowEmpty('name', 'create');
+
+        $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');

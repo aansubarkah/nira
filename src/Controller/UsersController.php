@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\I18n\Date;
+use Cake\Mailer\Email;
 
 /**
  * Users Controller
@@ -13,6 +14,17 @@ use Cake\I18n\Date;
 class UsersController extends AppController
 {
 
+    public $limit = 10;
+
+    /*
+     * breadcrumbs variable, format like
+     * [['link 1', 'link title 1'], ['link 2', 'link title 2']]
+     *
+     * */
+    public $breadcrumbs = [
+        ['users', 'Pengguna']
+    ];
+
     /**
      * Index method
      *
@@ -20,11 +32,83 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Roles']
-        ];
-        $users = $this->paginate($this->Users);
+        $query = $this->Users->find('all', [
+            'conditions' => ['Users.active' => 1],
+            'contain' => [
+                'Emails' => ['conditions' => ['Emails.active' => 1]],
+                'Roles',
+            ],
+            'limit' => $this->limit
+        ]);
 
+        $querySearchOld = 'verifikasi:semua level:semua';
+        if ($this->request->query('search'))
+        {
+            $querySearchOld = strtolower($this->request->query('search'));
+            $querySearch = $querySearchOld;
+
+            if (strpos($querySearch, 'verifikasi:sudah') !== false) {
+                $verifiedSearch = 1;
+                $querySearch = str_replace('verifikasi:sudah', '', $querySearch);
+            }
+            if (strpos($querySearch, 'verifikasi:belum') !== false) {
+                $verifiedSearch = 0;
+                $querySearch = str_replace('verifikasi:belum', '', $querySearch);
+            }
+            if (strpos($querySearch, 'verifikasi:semua') !== false) {
+                $querySearch = str_replace('verifikasi:semua', '', $querySearch);
+            }
+
+            if (strpos($querySearch, 'level:administrator') !== false) {
+                $roleSearch = 1;
+                $querySearch = str_replace('level:administrator', '', $querySearch);
+            }
+            if (strpos($querySearch, 'level:pengguna') !== false) {
+                $roleSearch = 2;
+                $querySearch = str_replace('level:pengguna', '', $querySearch);
+            }
+            if (strpos($querySearch, 'level:semua') !== false) {
+                $querySearch = str_replace('level:semua', '', $querySearch);
+            }
+
+            $querySearch = trim($querySearch);
+
+            $queryArray = [
+                'LOWER(fullname) LIKE' => '%' . $querySearch . '%'
+            ];
+
+            if (strpos($querySearchOld, 'verifikasi:sudah') !== false || strpos($querySearchOld, 'verifikasi:belum') !== false) {
+                $queryArray['verified = '] = $verifiedSearch;
+            }
+            if (strpos($querySearchOld, 'level:administrator') !== false || strpos($querySearchOld, 'level:pengguna') !== false) {
+                $queryArray['role_id = '] = $roleSearch;
+            }
+
+            $query->where($queryArray);
+        }
+        if ($this->request->query('sort'))
+        {
+            $query->order([
+                $this->request->query('sort') => $this->request->query('direction')
+            ]);
+        } else {
+            $query->order(['fullname' => 'ASC']);
+        }
+        $this->paginate = ['limit' => $this->limit];
+        /*$this->paginate = [
+            'contain' => ['Senders', 'Users', 'Vias'],
+            'order' => ['date' => 'DESC'],
+            'limit' => $this->limit
+        ];*/
+        $breadcrumbs = $this->breadcrumbs;
+        $this->set('breadcrumbs', $breadcrumbs);
+
+        $users = $this->paginate($query);
+        $this->set('limit', $this->limit);
+        $this->set('isShowAddButton', true);
+        $this->set('querySearchOld', $querySearchOld);
+
+        $this->set('title', 'Daftar Pengguna');
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
     }
@@ -121,13 +205,37 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $user = $this->Users->get($id);
+        $user->active = 0;
+        $this->Users->save($user);
+
+        return $this->redirect(['action' => 'index']);
+
+        /*$this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
+
+        return $this->redirect(['action' => 'index']);*/
+    }
+
+    /**
+     * Verify method
+     *
+     * @param string|null $id User id.
+     * @return \Cake\Network\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function verify($id = null)
+    {
+        $user = $this->Users->get($id);
+        $user->verified = 1;
+        $this->Users->save($user);
+
+        $this->sendVerifiedEmail($id);
 
         return $this->redirect(['action' => 'index']);
     }
@@ -206,4 +314,42 @@ class UsersController extends AppController
     {
         $this->set('title', 'Profil');
     }
+
+    //public function sendVerifiedEmail($userId)
+    //{
+    private function sendVerifiedEmail($userId)
+    {
+        // get user info
+        $user = $this->Users->get($userId, [
+            'contain' => ['Emails']
+        ]);
+
+        if (count($user['emails']) > 0) {
+            Email::configTransport('gmail', [
+                'host' => 'smtp.gmail.com',
+                'port' => 587,
+                'username' => 'serverppnijatim01@gmail.com',
+                'password' => 'G4tewaywaru',
+                'className' => 'Smtp',
+                'tls' => true
+            ]);
+
+            foreach ($user['emails'] as $t) {
+                if (!empty($t['name'])) {
+                    $email = new Email();
+                    $email->transport('gmail');
+
+                    $email->viewVars(['title' => 'Verifikasi Profil Perawat', 'person' => $user]);
+                    $email->template('verified', 'default')
+                        ->helpers(['Url', 'Time'])
+                        ->emailFormat('html')
+                        ->from(['serverppnijatim01@gmail.com' => 'Profil Perawat PPNI Jatim'])
+                        ->to($t['name'])
+                        ->subject('Verifikasi Profil Perawat')
+                        ->send();
+                }
+            }
+        }
+    }
+
 }

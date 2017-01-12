@@ -196,7 +196,7 @@ echo $this->Form->button('Masuk', [
         'class' => 'form-control',
         'placeholder' => 'Password',
         'autocomplete' => 'off',
-        'id' => 'password',
+        'id' => 'password1',
         'required',
         'data-error' => 'Password harus diisi'
     ]);
@@ -218,7 +218,7 @@ echo $this->Form->button('Masuk', [
         'id' => 'password2',
         'required',
         'data-error' => 'Password harus sama',
-        'data-match' => '#password'
+        'data-match' => '#password1'
     ]);
 ?>
                                     </div>
