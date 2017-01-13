@@ -179,4 +179,19 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    /**
+    * Find Auth
+    *
+    * @param \Cake\ORM\Query $query
+    * @param array $options
+    * @return \Cake\ORM\Query $query
+    */
+    public function findAuth(\Cake\ORM\Query $query, array $options)
+    {
+        $query
+            ->where(['Users.active' => 1, 'Users.verified' => 1]);
+
+        return $query;
+    }
 }

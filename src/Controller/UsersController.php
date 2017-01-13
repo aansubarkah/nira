@@ -105,7 +105,7 @@ class UsersController extends AppController
 
         $users = $this->paginate($query);
         $this->set('limit', $this->limit);
-        $this->set('isShowAddButton', true);
+        //$this->set('isShowAddButton', true);
         $this->set('querySearchOld', $querySearchOld);
 
         $this->set('title', 'Daftar Pengguna');
@@ -312,11 +312,61 @@ class UsersController extends AppController
 
     public function profile()
     {
-        $this->set('title', 'Profil');
+        if ($this->Auth->user()) {
+            $id = $this->Auth->user('id');
+            $profile = $this->Users->get($id, [
+                'contain' => [
+                    'Emails',
+                    'Phones',
+                    'Offices',
+                    'Addresses',
+                    'Educations',
+                    'Trainings',
+                    'Certificates',
+                    'Companies'
+                ]
+            ]);
+
+            $breadcrumbs = $this->breadcrumbs;
+            $this->set('breadcrumbs', $breadcrumbs);
+            $this->set(compact('profile', $profile));
+
+            $this->set('title', 'Profil');
+        }
     }
 
-    //public function sendVerifiedEmail($userId)
-    //{
+    public function profileEdit()
+    {
+        if ($this->Auth->user()) {
+            $id = $this->Auth->user('id');
+
+            $profile = $this->Users->get($id);
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                // reformat birthday date
+                $date = new Date($this->request->data['birthday']);
+                $this->request->data['birthday'] = $date->format('Y-m-d');
+
+                $profile = $this->Users->patchEntity($profile, $this->request->data);
+                if ($this->Users->save($profile)) {
+                    $this->Flash->success(__('The user has been saved.'));
+
+                    return $this->redirect(['action' => 'profile']);
+                } else {
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+            }
+
+            $birthday = new Date($profile['birthday']);
+            $birth = $birthday->format('d-m-Y');
+            $this->set('birth', $birth);
+            $breadcrumbs[] = ['profileEdit', 'Ubah'];
+            $this->set('breadcrumbs', $breadcrumbs);
+            $this->set(compact('profile', $profile));
+
+            $this->set('title', 'Profil Ubah');
+        }
+    }
+
     private function sendVerifiedEmail($userId)
     {
         // get user info
