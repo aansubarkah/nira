@@ -77,6 +77,33 @@ echo '</li>';
 
 echo '<li>';
 echo $this->Html->link(
+    '<i class="fa fa-envelope fa-fw"></i> Kontak',
+    ['controller' => 'emails',
+    'action' => 'profile'],
+    ['escape' => false]
+);
+echo '</li>';
+
+echo '<li>';
+echo $this->Html->link(
+    '<i class="fa fa-home fa-fw"></i> Profesi',
+    ['controller' => 'emails',
+    'action' => 'profile'],
+    ['escape' => false]
+);
+echo '</li>';
+
+echo '<li>';
+echo $this->Html->link(
+    '<i class="fa fa-home fa-fw"></i> Alamat',
+    ['controller' => 'emails',
+    'action' => 'profile'],
+    ['escape' => false]
+);
+echo '</li>';
+
+echo '<li>';
+echo $this->Html->link(
     '<i class="fa fa-mortar-board fa-fw"></i> Pendidikan',
     ['controller' => 'letters',
     'action' => 'index'],
