@@ -402,4 +402,59 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Change Password method
+     *
+     * @return \Cake\Network\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function changePassword()
+    {
+        if ($this->Auth->user()) {
+            $this->set('title', 'Pengguna');
+            $breadcrumbs = $this->breadcrumbs;
+            array_push($breadcrumbs, [
+                'changePassword/',
+                'Ubah Password'
+            ]);
+            $this->set('breadcrumbs', $breadcrumbs);
+
+            $id = $this->Auth->user('id');
+            $editPassword = $this->Users->get($id);
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $editPassword = $this->Users->patchEntity($editPassword, [
+                    'oldPassword' => $this->request->data['oldPassword'],
+                    'password' => $this->request->data['newPassword1'],
+                    'newPassword1' => $this->request->data['newPassword1'],
+                    'newPassword2' => $this->request->data['newPassword2']
+                ],
+                ['validate' => 'password']
+            );
+                if ($this->Users->save($editPassword)) {
+                    $this->redirect(['action' => 'profile']);
+                } else {
+                    $error_msg = [];
+                    foreach ($editPassword->errors() as $errors) {
+                        if (is_array($errors)) {
+                            foreach ($errors as $error) {
+                                $error_msg[] = $error;
+                            }
+                        } else {
+                            $error_msg = $errors;
+                        }
+                    }
+
+                    if (!empty($error_msg)) {
+                        $this->set('isError', true);
+                        $this->Flash->error(implode('\n \r', $error_msg));
+                    }
+                }
+            }
+            $this->set('editPassword', $editPassword);
+        } else {
+            $this->redirect(['action' => 'profile']);
+        }
+    }
+
 }

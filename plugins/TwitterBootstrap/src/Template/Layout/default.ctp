@@ -60,98 +60,47 @@ echo $this->Html->link(
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-<?php
-if (isset($user)) {
-    echo '<li>';
-    echo $this->Html->link(
-        '<i class="fa fa-user fa-fw"></i>&nbsp;' . $user['fullname'],
-        ['controller' => 'users', 'action' => 'profile'],
-        ['escape' => false]
-    );
-    echo '</li>';
-    echo '<li>';
-    echo $this->Html->link(
-        '<i class="fa fa-undo fa-fw"></i>&nbsp;Ubah Password',
-        ['controller' => 'users', 'action' => 'changePassword'],
-        ['escape' => false]
-    );
-    echo '</li>';
-
-    echo '<li class="divider"></li>';
-    echo '<li>';
-    echo $this->Html->link(
-        '<i class="fa fa-sign-out fa-fw"></i>&nbsp;Logout',
-        ['controller' => 'users', 'action' => 'logout'],
-        ['escape' => false]
-    );
-    echo '</li>';
-} else {
-    echo '<li>';
-    echo $this->Html->link(
-        '<i class="fa fa-sign-in fa-fw"></i>&nbsp;Login',
-        ['controller' => 'users', 'action' => 'login'],
-        ['escape' => false]
-    );
-    echo '</li>';
-}
-?>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                    <li>
 <?php
+echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-home fa-fw"></i> Profil',
     ['controller' => 'users',
     'action' => 'profile'],
     ['escape' => false]
 );
-?>
-                        </li>
-                        <li>
-<?php
+echo '</li>';
+
+echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-mortar-board fa-fw"></i> Pendidikan',
     ['controller' => 'letters',
     'action' => 'index'],
     ['escape' => false]
 );
-?>
-                        </li>
-                        <li>
-<?php
+echo '</li>';
+
+echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-group fa-fw"></i> Pelatihan',
     ['controller' => 'dispositions',
     'action' => 'index'],
     ['escape' => false]
 );
-?>
-                        </li>
-                        <li>
-<?php
+echo '</li>';
+
+echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-address-card-o fa-fw"></i> Sertifikasi',
     ['controller' => 'departements',
     'action' => 'index'],
     ['escape' => false]
 );
-?>
-                        </li>
-<?php
+
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-ambulance fa-fw"></i> Praktek',
@@ -178,6 +127,23 @@ if (isset($user) && $user['role_id'] === 1) {
     echo '</li>';
 
 }
+
+echo '<li>';
+echo $this->Html->link(
+    '<i class="fa fa-refresh fa-fw"></i> Ubah Password',
+    ['controller' => 'users', 'action' => 'changePassword'],
+    ['escape' => false]
+);
+echo '</li>';
+
+echo '<li>';
+echo $this->Html->link(
+    '<i class="fa fa-sign-out fa-fw"></i> Logout',
+    ['controller' => 'users', 'action' => 'logout'],
+    ['escape' => false]
+);
+echo '</li>';
+
 ?>
                     </ul>
                 </div>
