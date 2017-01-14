@@ -150,7 +150,7 @@ class EmailsController extends AppController
                 ]);
 
             $phones = $PhonesUsers->find()
-                ->where(['user_id' => $id])
+                ->where(['user_id' => $id, 'PhonesUsers.active' => 1])
                 ->contain([
                     'Phones' => function($q) {
                         return $q

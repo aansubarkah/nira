@@ -115,4 +115,26 @@ class PhonesUsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Profile Delete method
+     *
+     * @param string|null $id Emails User id.
+     * @return \Cake\Network\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function profileDelete($id = null)
+    {
+        if ($this->Auth->user()) {
+            $user_id = $this->Auth->user('id');
+
+            $phone = $this->PhonesUsers->get($id);
+            if ($phone->user_id == $user_id) {
+                $phone->active = 0;
+                $this->PhonesUsers->save($phone);
+            }
+
+            return $this->redirect(['controller' => 'emails', 'action' => 'profile']);
+        }
+    }
 }

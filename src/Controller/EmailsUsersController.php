@@ -126,10 +126,10 @@ class EmailsUsersController extends AppController
     public function profileDelete($id = null)
     {
         if ($this->Auth->user()) {
-            $id = $this->Auth->user('id');
+            $user_id = $this->Auth->user('id');
 
             $email = $this->EmailsUsers->get($id);
-            if ($email->user_id == $id) {
+            if ($email->user_id == $user_id) {
                 $email->active = 0;
                 $this->EmailsUsers->save($email);
             }
