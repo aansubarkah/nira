@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsToMany $Companies
  * @property \Cake\ORM\Association\BelongsToMany $Offices
  * @property \Cake\ORM\Association\BelongsToMany $Users
+ * @property \Cake\ORM\Association\HasMany $EmailsUsers
  *
  * @method \App\Model\Entity\Email get($primaryKey, $options = [])
  * @method \App\Model\Entity\Email newEntity($data = null, array $options = [])
@@ -57,6 +58,10 @@ class EmailsTable extends Table
             'targetForeignKey' => 'user_id',
             'joinTable' => 'emails_users'
         ]);
+        $this->hasMany('EmailsUsers', [
+            'foreignKey' => 'email_id',
+            'dependent' => true
+        ]);
     }
 
     /**
@@ -80,5 +85,11 @@ class EmailsTable extends Table
             ->notEmpty('active');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['name']));
+        return $rules;
     }
 }

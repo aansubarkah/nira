@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Company[] $companies
  * @property \App\Model\Entity\Office[] $offices
  * @property \App\Model\Entity\User[] $users
+ * @property \App\Model\Entity\EmailsUser[] $emailsusers
  */
 class Email extends Entity
 {

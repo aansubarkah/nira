@@ -87,7 +87,7 @@ echo '</li>';
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-home fa-fw"></i> Profesi',
-    ['controller' => 'emails',
+    ['controller' => 'offices',
     'action' => 'profile'],
     ['escape' => false]
 );
@@ -96,7 +96,7 @@ echo '</li>';
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-home fa-fw"></i> Alamat',
-    ['controller' => 'emails',
+    ['controller' => 'addresses',
     'action' => 'profile'],
     ['escape' => false]
 );
@@ -105,8 +105,8 @@ echo '</li>';
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-mortar-board fa-fw"></i> Pendidikan',
-    ['controller' => 'letters',
-    'action' => 'index'],
+    ['controller' => 'educations',
+    'action' => 'profile'],
     ['escape' => false]
 );
 echo '</li>';
@@ -114,8 +114,8 @@ echo '</li>';
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-group fa-fw"></i> Pelatihan',
-    ['controller' => 'dispositions',
-    'action' => 'index'],
+    ['controller' => 'trainings',
+    'action' => 'profile'],
     ['escape' => false]
 );
 echo '</li>';
@@ -123,15 +123,15 @@ echo '</li>';
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-address-card-o fa-fw"></i> Sertifikasi',
-    ['controller' => 'departements',
-    'action' => 'index'],
+    ['controller' => 'certificates',
+    'action' => 'profile'],
     ['escape' => false]
 );
 
 echo '<li>';
 echo $this->Html->link(
     '<i class="fa fa-ambulance fa-fw"></i> Praktek',
-    ['controller' => 'users', 'action' => 'index'],
+    ['controller' => 'companies', 'action' => 'profile'],
     ['escape' => false]
 );
 echo '</li>';
@@ -223,6 +223,17 @@ if (isset($isError))
 ?>
 <div class="col-lg-12">
     <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <?php echo $this->Flash->render(); ?>
+    </div>
+</div>
+<?php
+}
+if(isset($isSuccess))
+{
+?>
+<div class="col-lg-12">
+    <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <?php echo $this->Flash->render(); ?>
     </div>

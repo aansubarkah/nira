@@ -34,6 +34,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property \App\Model\Entity\Office[] $offices
  * @property \App\Model\Entity\Phone[] $phones
  * @property \App\Model\Entity\Training[] $trainings
+ * @property \App\Model\Entity\EmailsUser $emailsusers
  */
 class User extends Entity
 {

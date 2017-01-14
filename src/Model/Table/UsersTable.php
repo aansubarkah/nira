@@ -19,6 +19,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property \Cake\ORM\Association\BelongsToMany $Offices
  * @property \Cake\ORM\Association\BelongsToMany $Phones
  * @property \Cake\ORM\Association\BelongsToMany $Trainings
+ * @property \Cake\ORM\Association\HasMany $EmailsUsers
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -92,6 +93,10 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'training_id',
             'joinTable' => 'trainings_users'
+        ]);
+        $this->hasMany('EmailsUsers', [
+            'foreignKey' => 'user_id',
+            'dependent' => true
         ]);
     }
 
