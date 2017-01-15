@@ -148,7 +148,7 @@ if (isset($user) && $user['role_id'] === 1) {
     echo '<li>';
     echo $this->Html->link(
         '<i class="fa fa-bank fa-fw"></i> DPD/Komisariat',
-        ['controller' => 'entities', 'action' => 'index'],
+        ['controller' => 'offices', 'action' => 'index'],
         ['escape' => false]
     );
     echo '</li>';

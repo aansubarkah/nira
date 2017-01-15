@@ -5,23 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>PPNI - Login</title>
+    <title>Perawat - Login</title>
 
-    <?= $this->Html->meta('icon') ?>
 <?php
+echo $this->Html->meta('icon', $this->Url->image('/nurse1.png'));
+
 echo $this->Html->script([
-    'jquery.min',
+    'jquery-3.1.1.min',
     'moment-with-locales.min',
     'bootstrap.min',
     'sb-admin-2.min',
     'metisMenu.min'
 ]);
 echo $this->Html->css([
-    'bootstrap/bootstrap.min',
-    'metisMenu/metisMenu.min',
+    'bootstrap.min',
+    'metisMenu.min',
     'sb-admin-2.min',
-    'morrisjs/morris',
-    'font-awesome/css/font-awesome.min'
+    'morris',
+    'font-awesome.min'
 ]);
 ?>
     <?= $this->fetch('meta') ?>

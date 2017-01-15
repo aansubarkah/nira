@@ -301,8 +301,11 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             }
+            $this->set('isLoginError', true);
             $this->Flash->error(__('Invalid username or password, try again'));
         }
+        $this->viewBuilder()->layout('login');
+        $this->set('title', 'Login');
     }
 
     public function logout()
