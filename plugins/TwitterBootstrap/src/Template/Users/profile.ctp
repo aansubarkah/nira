@@ -100,7 +100,7 @@ echo $this->Html->link(
 <?php
 if (count($profile['educations']) > 0) {
     foreach ($profile['educations'] as $education) {
-        echo '<h5><small>' . $education['level_id'] . '</small> ' . $education['name'] . '</h5>';
+        echo '<h5><small>' . $education['level']['name'] . '</small> ' . $education['college']['name'] . '</h5>';
     }
 }
 ?>

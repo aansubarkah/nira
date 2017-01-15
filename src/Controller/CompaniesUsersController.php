@@ -96,23 +96,27 @@ class CompaniesUsersController extends AppController
         $this->set('_serialize', ['companiesUser']);
     }
 
+
     /**
-     * Delete method
+     * Profile Delete method
      *
-     * @param string|null $id Companies User id.
+     * @param string|null $id Emails User id.
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function profileDelete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $companiesUser = $this->CompaniesUsers->get($id);
-        if ($this->CompaniesUsers->delete($companiesUser)) {
-            $this->Flash->success(__('The companies user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The companies user could not be deleted. Please, try again.'));
-        }
+        if ($this->Auth->user()) {
+            $user_id = $this->Auth->user('id');
 
-        return $this->redirect(['action' => 'index']);
+            $data = $this->CompaniesUsers->get($id);
+            if ($data->user_id == $user_id) {
+                $data->active = 0;
+                $this->CompaniesUsers->save($data);
+            }
+
+            return $this->redirect(['controller' => 'companies', 'action' => 'profile']);
+        }
     }
+
 }

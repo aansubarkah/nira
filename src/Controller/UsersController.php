@@ -325,6 +325,8 @@ class UsersController extends AppController
                     'Offices.Categories',
                     'Addresses',
                     'Educations',
+                    'Educations.Colleges',
+                    'Educations.Levels',
                     'Trainings',
                     'Certificates',
                     'Companies'
