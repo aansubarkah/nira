@@ -72,12 +72,8 @@ class EducationsUsersTable extends Table
             ->allowEmpty('held');
 
         $validator
-            ->date('started')
-            ->allowEmpty('started');
-
-        $validator
-            ->date('ended')
-            ->allowEmpty('ended');
+            ->requirePresence('number', 'create')
+            ->notEmpty('number');
 
         $validator
             ->boolean('active')
@@ -98,7 +94,7 @@ class EducationsUsersTable extends Table
     {
         $rules->add($rules->existsIn(['education_id'], 'Educations'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
+        //$rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
 
         return $rules;
     }

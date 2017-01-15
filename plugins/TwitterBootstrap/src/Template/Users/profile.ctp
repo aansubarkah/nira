@@ -62,7 +62,7 @@ echo $this->Html->link(
 echo '<h5><small>NIRA</small> ' . $profile['nira'] . '</h5>';
 if (count($profile['offices']) > 0) {
     foreach ($profile['offices'] as $office) {
-        echo '<h5><small>Alamat</small> ' . $office['name'] . '</h5>';
+        echo '<h5><small>' . $office['category']['name'] . '</small> ' . $office['name'] . '</h5>';
     }
 }
 ?>

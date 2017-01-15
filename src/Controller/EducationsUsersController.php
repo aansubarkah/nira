@@ -98,23 +98,27 @@ class EducationsUsersController extends AppController
         $this->set('_serialize', ['educationsUser']);
     }
 
+
     /**
-     * Delete method
+     * Profile Delete method
      *
-     * @param string|null $id Educations User id.
+     * @param string|null $id Emails User id.
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function profileDelete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $educationsUser = $this->EducationsUsers->get($id);
-        if ($this->EducationsUsers->delete($educationsUser)) {
-            $this->Flash->success(__('The educations user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The educations user could not be deleted. Please, try again.'));
-        }
+        if ($this->Auth->user()) {
+            $user_id = $this->Auth->user('id');
 
-        return $this->redirect(['action' => 'index']);
+            $data = $this->EducationsUsers->get($id);
+            if ($data->user_id == $user_id) {
+                $data->active = 0;
+                $this->EducationsUsers->save($data);
+            }
+
+            return $this->redirect(['controller' => 'educations', 'action' => 'profile']);
+        }
     }
+
 }

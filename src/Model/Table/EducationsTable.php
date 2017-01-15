@@ -37,7 +37,7 @@ class EducationsTable extends Table
         parent::initialize($config);
 
         $this->table('educations');
-        $this->displayField('name');
+        $this->displayField('id');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -67,14 +67,6 @@ class EducationsTable extends Table
     {
         $validator
             ->allowEmpty('id', 'create');
-
-        $validator
-            ->string('name')
-            ->allowEmpty('name');
-
-        $validator
-            ->string('periods')
-            ->allowEmpty('periods');
 
         $validator
             ->boolean('active')

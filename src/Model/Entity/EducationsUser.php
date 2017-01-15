@@ -9,10 +9,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $education_id
  * @property int $user_id
+ * @property string $number
  * @property int $evidence_id
  * @property \Cake\I18n\Time $held
- * @property \Cake\I18n\Time $started
- * @property \Cake\I18n\Time $ended
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property bool $active

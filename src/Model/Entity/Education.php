@@ -9,8 +9,6 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $college_id
  * @property int $level_id
- * @property string $name
- * @property string $periods
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property bool $active

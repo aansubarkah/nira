@@ -322,6 +322,7 @@ class UsersController extends AppController
                     'Emails',
                     'Phones',
                     'Offices',
+                    'Offices.Categories',
                     'Addresses',
                     'Educations',
                     'Trainings',
