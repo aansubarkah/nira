@@ -33,18 +33,20 @@ echo $this->Form->end();
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Pengampu</th>
+                    <th>Induk</th>
                     <th>
 <?php
-echo $this->Paginator->sort('name', 'Nama');
+echo $this->Paginator->sort('Offices.name', 'Nama');
 ?>
                     </th>
                     <th>
 <?php
-echo $this->Paginator->sort('number', 'Kode');
+echo $this->Paginator->sort('Offices.number', 'Kode');
 ?>
                     </th>
                     <th>Kabupaten/Kota</th>
+                    <th>Alamat</th>
+                    <th>Telepon</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,50 +66,50 @@ foreach($offices as $office)
                     </td>
                     <td>
 <?php
-    echo $office['username'];
-?>
-                    </td>
-                    <td>
-<?php
-    echo $this->Html->link(
-        $office->fullname,
-        ['controller' => 'Offices', 'action' => 'view', $office->id],
-        ['escape' => false]
-    );
-
-?>
-                    </td>
-                    <td>
-<?php
-    echo $this->Html->link(
-        $office->nira,
-        ['controller' => 'Offices', 'action' => 'view', $office->id],
-        ['escape' => false]
-    );
-?>
-                    </td>
-                    <td>
-<?php
-    echo $office->has('emails') ? $this->Html->link($office['emails'][0]['name'], ['controller' => 'Emails', 'action' => 'view', $office['emails'][0]['id']]) : '';
-?>
-                    </td>
-                    <td>
-<?php
-    if ($office->verified) {
-        echo 'Sudah';
+    if ($office->parent_id == null) {
+        echo 'PPNI';
     } else {
-        echo 'Belum';
         echo $this->Html->link(
-            '<i class="fa fa-check-circle-o fa-fw"></i>',
-            ['controller' => 'Offices', 'action' => 'verify', $office->id],
-            ['escape' => false, 'confirm' => 'Verifikasi Pengguna ' . $office->fullname . '?']
+            $office->parent_office->name,
+            ['controller' => 'Offices', 'action' => 'view', $office->parent_office->id],
+            ['escape' => false]
         );
     }
 ?>
                     </td>
                     <td>
 <?php
-    echo $office->has('role') ? $this->Html->link($office['role']['name'], ['controller' => 'Roles', 'action' => 'view', $office['role']['id']]) : '';
+    echo $this->Html->link(
+        $office->category->name . '&nbsp;' . $office->name,
+        ['controller' => 'Offices', 'action' => 'view', $office->id],
+        ['escape' => false]
+    );
+?>
+                    </td>
+                    <td>
+<?php
+    echo $office->number;
+?>
+                    </td>
+                    <td>
+<?php
+    echo $office->regency->kind ? 'Kabupaten' : 'Kota';
+    echo '&nbsp;';
+    echo $office->regency->name;
+?>
+                    </td>
+                    <td>
+<?php
+    if (count($office->addresses) > 0) {
+        echo $office->addresses[0]['street'];
+    }
+?>
+                    </td>
+                    <td>
+<?php
+    if (count($office->phones) > 0) {
+        echo $office->phones[0]['name'];
+    }
     echo $this->Html->link(
         '<i class="fa fa-pencil fa-fw"></i>',
         ['controller' => 'Offices', 'action' => 'edit', $office->id],
@@ -116,7 +118,7 @@ foreach($offices as $office)
     echo $this->Html->link(
         '<i class="fa fa-trash fa-fw"></i>',
         ['controller' => 'Offices', 'action' => 'delete', $office->id],
-        ['escape' => false, 'confirm' => 'Ingin Menghapus Pengguna ' . $office->fullname . '?']
+        ['escape' => false, 'confirm' => 'Ingin Menghapus ' . $office->category->name . ' ' . $office->name . '?']
     );
 ?>
                     </td>
