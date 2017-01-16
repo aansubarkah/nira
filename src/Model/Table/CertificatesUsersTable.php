@@ -90,7 +90,7 @@ class CertificatesUsersTable extends Table
     {
         $rules->add($rules->existsIn(['certificate_id'], 'Certificates'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
+        //$rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
 
         return $rules;
     }

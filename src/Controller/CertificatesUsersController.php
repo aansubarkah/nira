@@ -117,4 +117,27 @@ class CertificatesUsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Profile Delete method
+     *
+     * @param string|null $id Emails User id.
+     * @return \Cake\Network\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function profileDelete($id = null)
+    {
+        if ($this->Auth->user()) {
+            $user_id = $this->Auth->user('id');
+
+            $data = $this->CertificatesUsers->get($id);
+            if ($data->user_id == $user_id) {
+                $data->active = 0;
+                $this->CertificatesUsers->save($data);
+            }
+
+            return $this->redirect(['controller' => 'certificates', 'action' => 'profile']);
+        }
+    }
+
 }

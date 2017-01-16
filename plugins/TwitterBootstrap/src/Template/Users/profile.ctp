@@ -116,9 +116,9 @@ echo $this->Html->link(
 ?>
                     <address>
 <?php
-if (count($profile['trainings']) > 0) {
-    foreach ($profile['trainings'] as $training) {
-        echo '<h5><small>Pelatihan</small> ' . $training['name'] . '</h5>';
+if (count($trainings) > 0) {
+    foreach ($trainings as $training) {
+        echo '<h5><small>Pelatihan</small> ' . $training['training']['name'] . '</h5>';
     }
 }
 ?>
@@ -136,9 +136,9 @@ echo $this->Html->link(
 ?>
                     <address>
 <?php
-if (count($profile['certificates']) > 0) {
-    foreach ($profile['certificates'] as $certificate) {
-        echo '<h5><small>Sertifikasi</small> ' . $certificate['name'] . '</h5>';
+if (count($certificates) > 0) {
+    foreach ($certificates as $certificate) {
+        echo '<h5><small>Sertifikasi</small> ' . $certificate['certificate']['name'] . '</h5>';
     }
 }
 ?>

@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\I18n\Date;
 use Cake\Mailer\Email;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -316,6 +317,9 @@ class UsersController extends AppController
     public function profile()
     {
         if ($this->Auth->user()) {
+            $TrainingsUsers = TableRegistry::get('TrainingsUsers');
+            $CertificatesUsers = TableRegistry::get('CertificatesUsers');
+
             $id = $this->Auth->user('id');
             $profile = $this->Users->get($id, [
                 'contain' => [
@@ -327,16 +331,29 @@ class UsersController extends AppController
                     'Educations',
                     'Educations.Colleges',
                     'Educations.Levels',
-                    'Trainings',
-                    'Certificates',
                     'Companies'
                 ]
+            ]);
+
+            $trainings = $TrainingsUsers->find('all', [
+                'contain' => ['Trainings', 'Trainings.Issuers'],
+                'conditions' => ['TrainingsUsers.user_id' => $this->Auth->user('id'), 'TrainingsUsers.active' => 1],
+                'order' => ['TrainingsUsers.created' => 'DESC'],
+                'limit' => 5
+            ]);
+
+            $certificates = $CertificatesUsers->find('all', [
+                'contain' => ['Certificates', 'Certificates.Issuers'],
+                'condition' => ['CertificatesUsers.user_id' => $this->Auth->user('id'), 'CertificatesUsers.active' => 1],
+                'order' => ['CertificatesUsers.held' => 'DESC'],
+                'limit' => 5
             ]);
 
             $breadcrumbs = $this->breadcrumbs;
             $this->set('breadcrumbs', $breadcrumbs);
             $this->set(compact('profile', $profile));
-
+            $this->set(compact('trainings', $trainings));
+            $this->set(compact('certificates', $certificates));
             $this->set('title', 'Profil');
         }
     }

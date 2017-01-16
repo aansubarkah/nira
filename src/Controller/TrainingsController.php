@@ -333,13 +333,22 @@ class TrainingsController extends AppController
     */
     private function getissuerId($name = null, $id = null)
     {
-        $data = $this->Trainings->Issuers->find('all', [
-            'conditions' => [
-                'Issuers.id' => $id,
-                'Issuers.name' => $name,
-                'Issuers.active' => 1
-            ]
-        ]);
+        if ($id == 0) {
+            $data = $this->Certificates->Issuers->find('all', [
+                'conditions' => [
+                    'Issuers.name' => $name,
+                    'Issuers.active' => 1
+                ]
+            ]);
+        } else {
+            $data = $this->Certificates->Issuers->find('all', [
+                'conditions' => [
+                    'Issuers.id' => $id,
+                    'Issuers.name' => $name,
+                    'Issuers.active' => 1
+                ]
+            ]);
+        }
 
         if ($data->count() < 1)
         {

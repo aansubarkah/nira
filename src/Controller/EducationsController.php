@@ -321,13 +321,23 @@ class EducationsController extends AppController
     */
     private function getCollegeId($name = null, $id = null)
     {
-        $data = $this->Educations->Colleges->find('all', [
-            'conditions' => [
-                'Colleges.id' => $id,
-                'Colleges.name' => $name,
-                'Colleges.active' => 1
-            ]
-        ]);
+        $name = trim($name);
+        if ($id == 0) {
+            $data = $this->Educations->Colleges->find('all', [
+                'conditions' => [
+                    'Colleges.name' => $name,
+                    'Colleges.active' => 1
+                ]
+            ]);
+        } else {
+            $data = $this->Educations->Colleges->find('all', [
+                'conditions' => [
+                    'Colleges.id' => $id,
+                    'Colleges.name' => $name,
+                    'Colleges.active' => 1
+                ]
+            ]);
+        }
 
         if ($data->count() < 1)
         {
