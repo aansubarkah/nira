@@ -86,7 +86,7 @@ class TrainingsUsersTable extends Table
     {
         $rules->add($rules->existsIn(['training_id'], 'Trainings'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
+        //$rules->add($rules->existsIn(['evidence_id'], 'Evidences'));
 
         return $rules;
     }

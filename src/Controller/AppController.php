@@ -81,7 +81,7 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
-        $this->set('user', $this->Auth->user());
+        //$this->set('user', $this->Auth->user());
 
         $this->viewBuilder()->theme('TwitterBootstrap');
     }
