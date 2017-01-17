@@ -335,7 +335,7 @@ class CertificatesController extends AppController
     }
 
     /**
-    * Get Education Id method
+    * Get Certificate Id method
     *
     * @param string $name
     * @return int $data_id

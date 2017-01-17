@@ -236,7 +236,7 @@ class UsersController extends AppController
         $user->verified = 1;
         $this->Users->save($user);
 
-        $this->sendVerifiedEmail($id);
+        //$this->sendVerifiedEmail($id);
 
         return $this->redirect(['action' => 'index']);
     }
